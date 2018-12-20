@@ -50,9 +50,17 @@ int find(vector<int> nums) {
     return nums[m];
 }
 
+int find_v2(vector<int>& nums) {
+    int a = nums[0];
+    for (int i = 1; i < (int)nums.size(); ++i) {
+        a ^= nums[i];
+    }
+    return a;
+}
+
 int main() {
-    vector<int> num{1,1,4,4,4,4,4,4,66,66,7,8,8};
-    int a = find(num);
+    vector<int> num{7,4,1,4,4,66,4,4,4,66,8,8,1};
+    int a = find_v2(num);
     cout<<a<<endl;
     return 0;
 }

@@ -11,7 +11,7 @@ void combination_with_for_in_recursive(vector<vector<int>>& results, vector<int>
         return;
     }
     // loop
-    for (int i = level; i < nums.size(); ++i) {
+    for (int i = level; i < (int)nums.size(); ++i) {
         result.push_back(nums[i]);
         combination_with_for_in_recursive(results, nums, result, i + 1, target - 1);
         result.pop_back();
@@ -24,7 +24,7 @@ void combination_with_recursive(vector<vector<int>>& results, vector<int>& nums,
         results.push_back(result);
         return;
     }
-    if (level >= nums.size()) return;
+    if (level >= (int)nums.size()) return;
     // loop
     // use it
     result.push_back(nums[level]);
