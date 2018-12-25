@@ -54,16 +54,19 @@ vector<vector<int>> permutation_with_next_nums(vector<int>& nums, int level) {
 }
 
 int main() {
-    vector<int> nums{1, 2, 3, 4}, result{}, visited(nums.size(), 0);
+    vector<int> nums{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, result{}, visited(nums.size(), 0);
     vector<vector<int>> results{};
-    //permutation_with_visited(results, result, nums, visited, 3);
-    results = permutation_with_next_nums(nums, 2);
+    permutation_with_visited(results, result, nums, visited, 10);
+
+    //results = permutation_with_next_nums(nums, 10);
+    /**
     for (auto x : results) {
         for (auto xx : x) {
             cout<<xx<<" ";
         }
         cout<<endl;
     }
+    **/
     cout<<"total size:"<<results.size()<<endl;
     return 0;
 }
