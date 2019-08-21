@@ -26,14 +26,12 @@ int cmp(struct suffix a, struct suffix b) {
 }
 
 void countSort(suffix *suffixes, int n, int exp, int ri) {
-    cout << "exp:" << exp << " ri:" << ri << endl;
     struct suffix output[n];
 
     int i, count[10] = {0};
     for (int i = 0; i < n; ++i) ++count[(suffixes[i].rank[ri] / exp) % 10];
     for (int i = 1; i < 10; ++i) count[i] += count[i - 1];
     for (int i = n - 1; i >= 0; --i) {
-        cout<<"i:" << i << " index:" << count[(suffixes[i].rank[ri] / exp) % 10] - 1<< endl;
         output[count[(suffixes[i].rank[ri] / exp) % 10] - 1] = suffixes[i];
         --count[ (suffixes[i].rank[ri] / exp) % 10];
     }
@@ -42,16 +40,10 @@ void countSort(suffix *suffixes, int n, int exp, int ri) {
 }
 
 void sortRadix(suffix *suffixes, int n) {
-    for (int ri = 0; ri < 2; ++ri) {
+    for (int ri = 1; ri >= 0; --ri) {
         int m = 0;
         for (int i = 0; i < n; ++i) {
             m = max(suffixes[i].rank[ri], m);
-        }
-        cout << " max :" << m << endl;
-        if (ri == 1) {
-            for (int k = 0; k < n; ++k) {
-                cout << "suf index:" << suffixes[k].index << " rank0:" << suffixes[k].rank[0] << " rank1:" << suffixes[k].rank[1] << endl;
-            }
         }
         for (int exp = 1; m / exp > 0; exp *= 10) {
             countSort(suffixes, n, exp, ri);
@@ -70,7 +62,6 @@ int *buildSuffixArray(char *txt, int n) {
 
     //sort(suffixes, suffixes + n, cmp);
     sortRadix(suffixes, n);
-    for (int i = 0; i < n; ++i) cout <<" i:"<<i <<" index:"<< suffixes[i].index<<endl;
 
     int ind[n]; // original index -> suffixes index, as for finding the special suffix emlement by the original index
 
@@ -100,7 +91,6 @@ int *buildSuffixArray(char *txt, int n) {
         }
 
         sortRadix(suffixes, n);
-    for (int i = 0; i < n; ++i) cout <<" i:"<<i <<" index:"<< suffixes[i].index<<endl;
         //sort(suffixes, suffixes + n, cmp);
     }
 
