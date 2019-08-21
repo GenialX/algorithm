@@ -5,116 +5,76 @@
  *
  * see https://www.geeksforgeeks.org/suffix-array-set-2-a-nlognlogn-algorithm
  */
-
-#include <iostream>
-#include <cstring>
-#include <algorithm>
-
-using namespace std;
-
-// Structure to store information of a suffix
-struct suffix {
-    int index; // To store original index
-    int rank[2]; // To store ranks and next rank pair
-};
-
-// A comparison function used by sort() to compare two suffixes
-// Compares two pairs, returns 1 if first pair is smaller
-int cmp(struct suffix a, struct suffix b) {
-    return (a.rank[0] == b.rank[0]) ? (a.rank[1] < b.rank[1] ? 1 : 0) :
-        (a.rank[0] < b.rank[0] ? 1 : 0);
-}
-
-void countSort(suffix *suffixes, int n, int exp, int ri) {
-    struct suffix output[n];
-
-    int i, count[10] = {0};
-    for (int i = 0; i < n; ++i) ++count[(suffixes[i].rank[ri] / exp) % 10];
-    for (int i = 1; i < 10; ++i) count[i] += count[i - 1];
-    for (int i = n - 1; i >= 0; --i) {
-        output[count[(suffixes[i].rank[ri] / exp) % 10] - 1] = suffixes[i];
-        --count[ (suffixes[i].rank[ri] / exp) % 10];
-    }
-
-    for (int i = 0; i < n; ++i) suffixes[i] = output[i];
-}
-
-void sortRadix(suffix *suffixes, int n) {
-    for (int ri = 1; ri >= 0; --ri) {
-        int m = 0;
-        for (int i = 0; i < n; ++i) {
-            m = max(suffixes[i].rank[ri], m);
-        }
-        for (int exp = 1; m / exp > 0; exp *= 10) {
-            countSort(suffixes, n, exp, ri);
-        }
-    }
-}
-
-int *buildSuffixArray(char *txt, int n) {
-    struct suffix suffixes[n];
-
-    for (int i = 0; i < n; ++i) {
-        suffixes[i].index = i;
-        suffixes[i].rank[0] = txt[i] - 'a' + 1;
-        suffixes[i].rank[1] = (i + 1 < n) ? (txt[i + 1] - 'a' + 1) : 0;
-    }
-
-    //sort(suffixes, suffixes + n, cmp);
-    sortRadix(suffixes, n);
-
-    int ind[n]; // original index -> suffixes index, as for finding the special suffix emlement by the original index
-
-    for (int k = 4; k < 2 * n; k *= 2) {
-        int rank = 0;
-        int prev_rank = suffixes[0].rank[0];
-        suffixes[0].rank[0] = rank;
-        ind[suffixes[0].index] = 0;
-
-        // Assign rank to suffixes
-        for (int i = 1; i < n; ++i) {
-            if (suffixes[i].rank[0] == prev_rank &&
-                    suffixes[i].rank[1] == suffixes[i - 1].rank[1]) {
-                prev_rank = suffixes[i].rank[0];
-                suffixes[i].rank[0] = suffixes[i - 1].rank[0];
-            } else {
-                prev_rank = suffixes[i].rank[0];
-                suffixes[i].rank[0] = ++rank;
-            }
-            ind[suffixes[i].index] = i;
-        }
-        
-        // Assign next rank to suffixes
-        for (int i = 0; i < n; ++i) {
-            int nextindex = suffixes[i].index + k / 2;
-            suffixes[i].rank[1] = nextindex < n ? (suffixes[ind[nextindex]].rank[0]) : 0;
-        }
-
-        sortRadix(suffixes, n);
-        //sort(suffixes, suffixes + n, cmp);
-    }
-
-    int *suffixArr = new int[n];
-    for (int i = 0; i < n; ++i) {
-        suffixArr[i] = suffixes[i].index;
-    }
-
-    return suffixArr;
-}
-
-void printArr(int arr[], int n)
-{
-    for (int i = 0; i < n; i++)
-        cout << arr[i] << " ";
-    cout << endl;
-}
-
-int main()
-{
-    char txt[] = "banana";
-    int n = strlen(txt);
-    int *suffixArr = buildSuffixArray(txt,  n);
-    cout << "Following is suffix array for " << txt << endl;
-    printArr(suffixArr, n);
-    return 0;
-}
+// C++ implementation of Radix Sort 
+#include<iostream> 
+using namespace std; 
+  
+// A utility function to get maximum value in arr[] 
+int getMax(int arr[], int n) 
+{ 
+    int mx = arr[0]; 
+    for (int i = 1; i < n; i++) 
+        if (arr[i] > mx) 
+            mx = arr[i]; 
+    return mx; 
+} 
+  
+// A function to do counting sort of arr[] according to 
+// the digit represented by exp. 
+void countSort(int arr[], int n, int exp) 
+{ 
+    int output[n]; // output array 
+    int i, count[10] = {0}; 
+  
+    // Store count of occurrences in count[] 
+    for (i = 0; i < n; i++) 
+        count[ (arr[i]/exp)%10 ]++; 
+  
+    // Change count[i] so that count[i] now contains actual 
+    //  position of this digit in output[] 
+    for (i = 1; i < 10; i++) 
+        count[i] += count[i - 1]; 
+  
+    // Build the output array 
+    for (i = n - 1; i >= 0; i--) 
+    { 
+        output[count[ (arr[i]/exp)%10 ] - 1] = arr[i]; 
+        count[ (arr[i]/exp)%10 ]--; 
+    } 
+  
+    // Copy the output array to arr[], so that arr[] now 
+    // contains sorted numbers according to current digit 
+    for (i = 0; i < n; i++) 
+        arr[i] = output[i]; 
+} 
+  
+// The main function to that sorts arr[] of size n using  
+// Radix Sort 
+void radixsort(int arr[], int n) 
+{ 
+    // Find the maximum number to know number of digits 
+    int m = getMax(arr, n); 
+  
+    // Do counting sort for every digit. Note that instead 
+    // of passing digit number, exp is passed. exp is 10^i 
+    // where i is current digit number 
+    for (int exp = 1; m/exp > 0; exp *= 10) 
+        countSort(arr, n, exp); 
+} 
+  
+// A utility function to print an array 
+void print(int arr[], int n) 
+{ 
+    for (int i = 0; i < n; i++) 
+        cout << arr[i] << " "; 
+} 
+  
+// Driver program to test above functions 
+int main() 
+{ 
+    int arr[] = {170, 45, 75, 90, 802, 24, 2, 66}; 
+    int n = sizeof(arr)/sizeof(arr[0]); 
+    radixsort(arr, n); 
+    print(arr, n); 
+    return 0; 
+} 
