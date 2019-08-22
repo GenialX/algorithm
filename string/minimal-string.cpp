@@ -1,3 +1,6 @@
+/**
+ * https://oi-wiki.org/string/minimal-string/
+ */
 #include <iostream>
 
 using namespace std;
