@@ -35,12 +35,10 @@ void primMST(int graph[V][V]) {
 
     for (int count = 0; count < V - 1; ++count) {
         int u = minKey(key, mstSet);
-        cout << "u:" << u << endl;
         mstSet[u] = true;
         for (int v = 0; v < V; ++v) {
             if (mstSet[v] == false && graph[u][v] && graph[u][v] < key[v]) {
                 parent[v] = u, key[v] = graph[u][v];
-                cout << " update v:" << v << " key:" << key[v] << endl;
             }
         }
     }
