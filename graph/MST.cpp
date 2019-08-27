@@ -1,61 +1,50 @@
+/**
+ * LeetCode Similar Problems:
+ * https://leetcode.com/problems/optimize-water-distribution-in-a-village
+ */
 #include <bits/stdc++.h>
 using namespace std;
 
-#define V 5
-
-int minKey(int key[], bool mstSet[]) {
-    int min_v = INT_MAX, min_i;
-    for (int v = 0; v < V; ++v) {
-        if (mstSet[v] == false && key[v] < min_v) {
-            min_v = key[v], min_i = v;
+void primMST(unordered_map<int, vector<pair<int, int>>> graph, int n, int &cost) {
+    pair<int, int> pii; // cost, no.
+    set<int> seen;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>> > pq;
+    pq.push(make_pair(0, 0));
+    cost = 0;
+    while (!pq.empty()) {
+        auto pa = pq.top();
+        pq.pop();
+        if (seen.find(pa.second) != seen.end()) continue;
+        cost += pa.first;
+        seen.insert(pa.second);
+        if (seen.size() == n) break;
+        for (auto& next : graph[pa.second]) {
+            if (seen.find(next.first) != seen.end()) continue;
+            pq.push(make_pair(next.second, next.first));
         }
     }
-    return min_i;
-}
-
-void printMST(int parent[], int graph[V][V]) {
-    cout << "Edge \tWeight\n";
-    for (int i = 1; i < V; ++i)
-    {
-        cout << parent[i]  << " - " << i << " \t" << graph[i][parent[i]] << " \n";
-    }
-}
-
-void primMST(int graph[V][V]) {
-    int parent[V];
-    int key[V];
-    bool mstSet[V];
-
-    for (int i = 0; i < V; ++i) {
-        key[i] = INT_MAX, mstSet[i] = false;
-    }
-
-    key[0] = 0;
-    parent[0] = -1;
-
-    for (int count = 0; count < V - 1; ++count) {
-        int u = minKey(key, mstSet);
-        mstSet[u] = true;
-        for (int v = 0; v < V; ++v) {
-            if (mstSet[v] == false && graph[u][v] && graph[u][v] < key[v]) {
-                parent[v] = u, key[v] = graph[u][v];
-            }
-        }
-    }
-
-    printMST(parent, graph);
 }
 
 int main() {
-    int graph[V][V] = {
+    vector<vector<int>> graph = {
         {0, 2, 0, 6, 0},
         {2, 0, 3, 8, 5},
         {0, 3, 0, 0, 7},
         {6, 8, 0, 0, 9},
         {0, 5, 7, 9, 0}
     };
-
-    primMST(graph);
+    unordered_map<int, vector<pair<int, int>>> vmap;
+    int n = 5;
+    for (int r = 0; r < n; ++r) {
+        for (int c = 0; c < n; ++c) {
+            if (graph[r][c]) {
+                vmap[r].push_back(make_pair(c, graph[r][c]));
+            }
+        }
+    }
+    int cost = 0;
+    primMST(vmap, n, cost);
+    cout << "cost:" << cost << endl;
 
     return 0;
 }
