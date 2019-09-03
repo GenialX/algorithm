@@ -4,14 +4,15 @@ using namespace std;
 
 /**
  * Time Complexity: O(2^n), n is the length of str.
+ * Thanks to https://leetcode.com/problems/number-of-valid-words-for-each-puzzle/discuss/371864/Python-Find-all-Sub-Puzzles.
  */
 void bfs_only_once() {
     string str = "abc";
     vector<string> subs{""};
     for (auto& c : str) {
         vector<string> cur_subs;
-        for (auto& substr : subs) {
-            cur_subs.push_back(substr + c);
+        for (auto& sub : subs) {
+            cur_subs.push_back(sub + c);
         }
         subs.insert(subs.end(), cur_subs.begin(), cur_subs.end());
     }
