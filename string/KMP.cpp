@@ -15,7 +15,7 @@ void compute_prefix_tbl(string pattern, vector<int>& prefix_tbl, int flags) {
     unsigned k, q, len = pattern.length();
     const int icase = flags & IGNORECASE;
     for (k = 0, q = 1; q < len; ++q) {
-        if (k > 0 && (icase ? toupper(pattern[k]) : pattern[k]) != (icase ? toupper(pattern[q]) : pattern[q]))
+        while (k > 0 && (icase ? toupper(pattern[k]) : pattern[k]) != (icase ? toupper(pattern[q]) : pattern[q]))
             k = prefix_tbl[k - 1];
         if ((icase ? toupper(pattern[k]) : pattern[k]) == (icase ? toupper(pattern[q]) : pattern[q]))
             ++k;
