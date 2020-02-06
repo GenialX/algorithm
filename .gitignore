@@ -4,3 +4,4 @@ a.o*
 .vscode
 *.exe
 *.obj
+cmake-build-debug
