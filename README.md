@@ -1,4 +1,4 @@
 # algorithm
 algorithm learning
 
-more at [huxu.blog](huxu.blog)
+more at [www.ihuxu.com](https://www.ihuxu.com)
