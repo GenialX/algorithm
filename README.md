@@ -1,4 +1,4 @@
 # algorithm
 algorithm learning
 
-more at [www.ihuxu.com](https://www.ihuxu.com)
+more at [qoogle.top](https://qoogle.top)
