@@ -8,10 +8,8 @@ typedef long long ll;
 ll b[N];
 int n, m;
 
-
 void update(ll x, ll y) {
     for (; x <= N; x += x & -x) {
-        //    cout << x << endl;
         b[x] += y;
     }
 }
@@ -23,7 +21,7 @@ int query(ll x) {
     }
     return sum;
 }
-
+// find the lower bound
 int findIdx(vector<int>& ns, int x) {
     int l = 0, r = ns.size() - 1;
     while (l < r) {
@@ -33,9 +31,8 @@ int findIdx(vector<int>& ns, int x) {
         } else {
             l = m + 1;
         }
-        //    cout << l << " " << r << endl;
     }
-    return l + 1;
+    return r + 1;
 }
 
 int main() {
@@ -43,7 +40,6 @@ int main() {
     vector<int> nums;
     unordered_map<int, int> hm;
     cin >> n >> m;
-
     for (int i = 0; i < n; ++i) {
         cin >> x >> c;
         hm[x] += c;
@@ -55,7 +51,6 @@ int main() {
     for (auto x : nums) {
         int idx = findIdx(nums, x);
         int value = hm[x];
-        //    cout << "x:" << x << " idx:" << idx << " v:" << value << endl;
         update(idx, value);
     }
 
@@ -64,7 +59,6 @@ int main() {
         int lidx = findIdx(nums, l), ridx = findIdx(nums, r);
         if (nums[lidx - 1] < l) ++lidx;
         if (nums[ridx - 1] > r) --ridx;
-        //   cout << l << " " << lidx << " " << r << " " << ridx << endl;
         cout << query(ridx) - query(lidx - 1) << endl;
     }
     return 0;
