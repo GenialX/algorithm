@@ -5,3 +5,4 @@ a.o*
 *.exe
 *.obj
 cmake-build-debug
+a
