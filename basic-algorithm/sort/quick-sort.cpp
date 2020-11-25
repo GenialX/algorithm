@@ -16,7 +16,7 @@ void quick_sort(int l, int r) {
     }
     quick_sort(l, j);
     quick_sort(j + 1, r);
-    // j,j+1,l
+    // j,j+1,low
 }
 
 int main() {
