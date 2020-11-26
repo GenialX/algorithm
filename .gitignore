@@ -6,3 +6,4 @@ a.o*
 *.obj
 cmake-build-debug
 a
+.*
