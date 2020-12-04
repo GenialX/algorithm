@@ -46,11 +46,11 @@ int main() {
     mannacher(strA, pA);
     mannacher(strB, pB);
     cout<<"sa:"<<strA<<endl;
-    for (int i = 0; i < len; ++i) {
+    for (int i = 0; i <= len; ++i) {
         cout<<"i:"<<i<<" pi:"<<pA[i]<<" ";
     }
     cout<<"sb:"<<strA<<endl;
-    for (int i = 0; i < len; ++i) {
+    for (int i = 0; i <= len; ++i) {
         cout<<"i:"<<i<<" pi:"<<pB[i]<<" ";
     }
     printf("%d\n", query());
