@@ -1,3 +1,4 @@
+// 《算法竞赛入门经典2》p286
 #include<bits/stdc++.h>
 using namespace std;
 int n;
