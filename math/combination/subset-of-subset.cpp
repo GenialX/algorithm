@@ -13,10 +13,7 @@ void print_subset(int s) {
 int main() {
     scanf("%d",&n);
     for(int i=1;i<(1<<n);++i) {
-        printf("i:%d\n", i);
-        print_subset(i);
         for(int j=i;j;j=(j-1)&i) {
-            printf("j:%d\n",j);
             print_subset(j);
         }
     }
